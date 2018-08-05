@@ -1,0 +1,41 @@
+.fbbAdvertisingContent{
+	display: flex;
+	height:100px;
+	width:500px;
+	border:1px solid #ccc;
+}
+.advertising_right{
+	height: 100%;
+	width:40px;
+	border:1px solid #ccc;
+}
+.advertising_content{
+	display: flex;
+	height: 100%;
+	width:calc(100% - 40px);
+	border: 1px solid #ccc;
+/*	align-items: center;
+*/}
+.right_arrow,.left_arrow{
+	display: flex;
+	height: 100%;
+	width: 20px;
+	align-items: center;
+	border: 1px solid #ccc;
+}
+.advertise_content{
+	display: flex;
+	height: 100%;
+	width: calc(100% - 40px);
+	border: 1px solid #ccc;
+	overflow: hidden;
+}
+.advertise_real{
+	height: 100%;
+	width: 100px;
+	border: 1px solid #ccc;
+	margin-right: 20px;
+}
+.advertise_content>div{
+	display: flex;
+}
