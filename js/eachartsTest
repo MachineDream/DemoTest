@@ -1,0 +1,89 @@
+option = {
+    legend: {
+        data:['A运营商','B运营商','C运营商']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            offset:14,
+            data : ['周一','周二','周三','周四','周五','周六','周日']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            name:"流量$"/*,
+            nameTextStyle:{
+                align:'right',
+            }*/
+        }
+    ],
+    series : [
+        {
+            name:'A运营商',
+            type:'bar',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'inside',
+                    color:'#000'
+                }
+            },
+            stack: '广告',
+            barWidth : 20,
+            barGap: 1,
+            data:[320, 332, 301, 334, 390, 330, 320],
+            markPoint:{
+                symbol:'circle',
+                symbolSize:[0, 1],// 容器大小
+                symbolOffset:[0,8],//位置偏移
+                label:{
+                    color:"rgba(0, 0, 0, 1)"
+                },
+                data:[{
+                    name:'优化前',
+                    value:'优化前',
+                    xAxis: 0,
+                    yAxis: 0
+                }
+                ],
+            }
+        },
+        
+        {
+            name:'A运营商',
+            type:'bar',
+            barWidth : 20,
+            stack: '搜索引擎',
+             label: {
+                normal: {
+                    show: true,
+                    position: 'inside',
+                    color:'#000'
+                }
+            },
+            data:[620, 732, 701, 734, 1090, 1130, 1120],
+             markPoint:{
+                symbol:'circle',
+                symbolSize:[0, 1],// 容器大小
+                symbolOffset:[0,8],//位置偏移
+                 label:{
+                    color:"rgba(0, 0, 0, 1)"
+                },
+                data:[{
+                    name:'优化后',
+                    value:'优化后',
+                    xAxis: 0,
+                    yAxis: 0
+                }
+                ],
+            }
+        }
+    ]
+};
