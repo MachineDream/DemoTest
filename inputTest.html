@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input id="demo" type="text" placeholder="%"/>
+	</body>
+</html>
+<script type="text/javascript" src="js/jquery-3.2.1.js" ></script>
+<script>
+	$("#demo").on("focus",function(e){
+		that = this;
+		$this = $(this);
+		var value = $this.val();
+		if(value == "")
+		{
+			return;
+		}
+		setTimeout(function(){
+			that.setSelectionRange(value.length - 1,value.length - 1)
+		},10);
+	})
+	$("#demo").on("click",function(e){
+		that = this;
+		$this = $(this);
+		var value = $this.val();
+		if(value == "")
+		{
+			return;
+		}
+		if(this.selectionEnd >= value.length){
+			setTimeout(function(){
+				that.setSelectionRange(value.length - 1,value.length - 1)
+			},10);
+		}
+	})
+	$("#demo").on("input",function(){
+		$this = $(this);
+		var value = $this.val();
+		var unit = $this.attr("placeholder");
+		if(value == unit){
+			$this.val('');
+			return;
+		}
+		if(value.substring(value.length - unit.length) != unit)
+		{
+			$this.val(value+unit);
+			this.setSelectionRange(value.length,value.length);
+		}
+	})
+	$("#demo").on("keydown",function(e){
+		that = this;
+		$this = $(this);
+		var value = $this.val();
+		var pos = this.selectionEnd+1;
+		if((e.keyCode == 39 && pos >= value.length)
+				|| e.keyCode == 40){
+			setTimeout(function(){
+				that.setSelectionRange(value.length - 1,value.length - 1)
+			},10);
+		}
+	})
+</script>
