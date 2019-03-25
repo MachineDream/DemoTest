@@ -1,1 +1,132 @@
 
+*js中数学计算时，要注意！0的判断   可以在表达式后加""变字符串
+
+
+*输入框操作时，如果默认为0，可以用placehoder，如果没用要记得去0操作
+
+
+*输入框操作时，要考虑全选删除的情况，置默认值
+
+
+*开发后面 在使用 window.close(); 方法时，前面加上
+window.opener=null;  
+window.open("","_self"); //解决IE下弹出“你查看的网页正在关闭选项卡”
+
+
+*jquery中$(window).resize可以监控浏览器窗口大小
+
+
+*数据库闪回
+alter table te_p_dc_data enable row movement;
+flashback table te_p_dc_data to timestamp to_timestamp('2017-09-11 15:30:00','yyyy-mm-dd hh24:mi:ss');
+
+
+*考虑需求的时候要考虑到复用性  不是仅仅完成需求就可以的
+
+
+*js浮点数精度问题，如100-88.71=11.29000000000012，解决方法——保留n位小数，就可以乘10的n次方，再除去10的n次方
+
+
+*layui插件无法动态渲染js动态拼接的页面，解决方法——可以在js动态拼接后，再用render()重新渲染
+
+
+*对于重复度高的代码，可以抽成方法或重载方法
+
+
+*对于UCD给的切图不要随便改宽高
+
+
+*min-width属性可以适配国际化宽度不一样的问题
+
+
+*图片垂直居中方法，先移动父元素的一半，在计算移动自身的一半
+position：relative
+top：50%
+transform：translateY（-50%）
+
+
+*ifram框架获取框架外的元素时，用window.parent.document
+
+
+*做下拉框的时候不要用select和option，用ul li替代
+
+
+*bootstrap修饰下拉框的时候，会出现点击下拉选项，选项自动滚动，点击事件无法生效的情况
+
+
+*&&运算 如果前面是false则后面不进行计算    ||运算  如果前面是true  则后面不进行计算
+
+
+*js事件优先级mousedown>blur>mouseup>click
+
+
+*加索引可以提高数据库效率
+
+
+*标签里面加title属性可以显示tips
+
+
+*在java中写正则时，\d,\w,\s等正则需要反转译写成\\d,\\w,\\s的样式
+
+
+*java中可以通过HashSet去重
+
+
+*取数组最大值，前提过滤数组中异常数据
+Math.max.apply([],[1,2,5,10]);
+
+
+*apply和call作用一样，都是改变上下文，只是传参方式不同
+apply需要传一个数组func.apply(this, [arg1, arg2])
+call需要按顺序把参数传进去就好func.call(this, arg1, arg2);
+
+
+
+*apply 、 call 、bind 三者都是用来改变函数的this对象的指向的；
+apply 、 call 、bind 三者第一个参数都是this要指向的对象，也就是想指定的上下文；
+apply 、 call 、bind 三者都可以利用后续参数传参；
+bind 是返回对应函数，便于稍后调用；apply 、call 则是立即调用 。
+
+
+*js中0==''为true
+0是逻辑的false
+''是逻辑的false
+所以0==''相当于false==false
+结果为true
+1是逻辑的true
+null是逻辑的false
+NaN是逻辑的false
+但是0==null为false
+0==NaN为false
+null==NaN为false
+
+
+*做遮罩的时候，需要加时间延迟，不然会进程被占用，不能立即出现遮罩
+
+
+
+* white-space:nowrap; 
+    text-overflow:ellipsis;
+-o-text-overflow:ellipsis;  
+    overflow:hidden;
+
+
+*vertical-align是相对于自身垂直调整
+
+
+*css三角写法
+ content: "";
+  border-width: 6px;
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-top-width: 0;
+  border-bottom-color: #676C6C;
+  top: -6px;
+  margin-left: 40px;
+
+
+*由于IE的js对象和DOM对象使用不同的垃圾收集方法，因此闭包在IE中会导致内存泄露问题，也就是无法销毁驻留在内存中的元素
