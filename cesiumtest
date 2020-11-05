@@ -1,0 +1,244 @@
+var BaseImage =
+      "http://192.168.31.223:9090/gisserver/rest/basemap/BaseImage/{z}/{x}/{y}.jpg";
+    var BaseVector =
+      "http://192.168.31.223:9090/gisserver/rest/basemap/BaseVector/{z}/{x}/{y}.png";
+    var Terrain = "http://192.168.31.223:9090/gisserver/rest/basemap/Terrain";
+    // Your access token can be found at: https://cesium.com/ion/tokens
+    Cesium.Ion.defaultAccessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmODRlYzZmNC1lNDJmLTQxZWItYmU1Ni1jN2UxYTRiMWIxZWEiLCJpZCI6MzYyNTgsImlhdCI6MTYwMzI0NTY5MH0.HmyPc8OyRdgTlzBQ8T88j0UorUcKegcxG-S9igiLYbM";
+    // Initialize the Cesium Viewer in the HTML element with the "cesiumContainer" ID.
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      skyBox: false,
+      // 设置基础图层
+      imageryProvider: new Cesium.UrlTemplateImageryProvider({
+        url: BaseImage
+      }),
+      // 是否显示baseLayer控件
+      baseLayerPicker: false,
+      infoBox: false,
+      selectionIndicator: false,
+      shadows: true,
+      shouldAnimate: true
+    });
+    // 隐藏Cesium版本等信息
+    viewer._cesiumWidget._creditContainer.style.display = "none";
+    // 加载新地图imagery
+    var Vector = new Cesium.UrlTemplateImageryProvider({ url: BaseVector });
+    // 加载地形
+    viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+      url: Terrain, // 地址记得换成自己的地形数据地址
+      requestWaterMask: true, // 开启法向量
+      requestVertexNormals: true // 开启水面特效
+    });
+    // 将新地图添加到现有的地图集合中
+    viewer.imageryLayers.addImageryProvider(Vector);
+    // 设置homebutton的位置
+    Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
+      110.15,
+      34.54,
+      110.25,
+      34.56
+    ); // Rectangle(west, south, east, north)
+    // 设置初始相机的位置;
+    viewer.camera.setView({
+      // Cartesian3 指定相机的位置
+      destination: Cesium.Cartesian3.fromDegrees(108, 34, 5000000) // 经度，纬度，高度
+    });
+    /*
+    // 点
+    viewer.entities.add({
+      // fromDegrees（经度，纬度，高度，椭球，结果）从以度为单位的经度和纬度值返回Cartesian3位置
+      position: Cesium.Cartesian3.fromDegrees(108, 34, 10),
+      point: {
+        // 点的大小（像素）
+        pixelSize: 5,
+        // 点位颜色，fromCssColorString 可以直接使用CSS颜色
+        color: Cesium.Color.fromCssColorString('#ee0000'),
+        // 边框颜色
+        outlineColor: Cesium.Color.fromCssColorString('#fff'),
+        // 边框宽度(像素)
+        outlineWidth: 2,
+        // 是否显示
+        show: true
+      }
+    });
+
+    //线
+    viewer.entities.add({
+      polyline: {
+        // fromDegrees返回给定的经度和纬度值数组（以度为单位），该数组由Cartesian3位置组成。
+        positions: Cesium.Cartesian3.fromDegreesArray([
+          120.9677706, 30.7985748,
+          110.20, 34.55
+        ]),
+        // 宽度
+        width: 2,
+        // 线的颜色
+        material: Cesium.Color.WHITE,
+        // 顺序,仅当`clampToGround`为true并且支持地形上的折线时才有效。
+        zIndex: 10,
+        // 是否显示
+        show: true
+      }
+    });
+
+    // 面
+    viewer.entities.add({
+      polygon: {
+        // 获取指定属性（positions，holes（图形内需要挖空的区域））
+        hierarchy: {
+          positions: Cesium.Cartesian3.fromDegreesArray([
+            120.9677706, 30.7985748,
+            110.20, 34.55,
+            120.20, 50.55
+          ]),
+          holes: [{
+            positions: Cesium.Cartesian3.fromDegreesArray([
+              119, 32,
+              115, 34,
+              119, 40
+            ])
+          }]
+        },
+        // 边框
+        outline: true,
+        // 边框颜色
+        outlineColor: Cesium.Color.WHITE,
+        // 边框尺寸
+        outlineWidth: 2,
+        // 填充的颜色，withAlpha透明度
+        material: Cesium.Color.GREEN.withAlpha(0.5),
+        // 是否被提供的材质填充
+        fill: true,
+        // 恒定高度
+        height: 5000,
+        // 显示在距相机的距离处的属性，多少区间内是可以显示的
+        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(1000, 10000000),
+        // 是否显示
+        show: true,
+        // 顺序,仅当`clampToGround`为true并且支持地形上的折线时才有效。
+        zIndex: 10
+      }
+    });
+
+    // 文字
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(120, 30, 5),
+      // 点
+      point: {
+        color: Cesium.Color.RED, // 点位颜色
+        pixelSize: 10 // 像素点大小
+      },
+      // 文字
+      label: {
+        // 文本。支持显式换行符“ \ n”
+        text: '测试名称',
+        // 字体样式，以CSS语法指定字体
+        font: '14pt Source Han Sans CN',
+        // 字体颜色
+        fillColor: Cesium.Color.BLACK,
+        // 背景颜色
+        backgroundColor: Cesium.Color.AQUA,
+        // 是否显示背景颜色
+        showBackground: true,
+        // 字体边框
+        outline: true,
+        // 字体边框颜色
+        outlineColor: Cesium.Color.WHITE,
+        // 字体边框尺寸
+        outlineWidth: 10,
+        // 应用于图像的统一比例。比例大于会1.0放大标签，而比例小于会1.0缩小标签。
+        scale: 1.0,
+        // 设置样式：FILL：填写标签的文本，但不要勾勒轮廓；OUTLINE：概述标签的文本，但不要填写；FILL_AND_OUTLINE：填写并概述标签文本。
+        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+        // 相对于坐标的垂直位置
+        verticalOrigin: Cesium.VerticalOrigin.CENTER,
+        // 相对于坐标的水平位置
+        horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+        // 该属性指定标签在屏幕空间中距此标签原点的像素偏移量
+        pixelOffset: new Cesium.Cartesian2(10, 0),
+        // 是否显示
+        show: true
+      }
+    });
+
+    // 图标（图片）
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(110.20, 34.55, 2.61),
+      billboard: {
+        // 图像地址，URI或Canvas的属性
+        image: '/location.png',
+        // 设置颜色和透明度
+        color: Cesium.Color.WHITE.withAlpha(0.8),
+        // 高度（以像素为单位）
+        height: 50,
+        // 宽度（以像素为单位）
+        width: 50,
+        // 逆时针旋转
+        rotation: 20,
+        // 大小是否以米为单位
+        sizeInMeters: false,
+        // 相对于坐标的垂直位置
+        verticalOrigin: Cesium.VerticalOrigin.CENTER,
+        // 相对于坐标的水平位置
+        horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+        // 该属性指定标签在屏幕空间中距此标签原点的像素偏移量
+        pixelOffset: new Cesium.Cartesian2(10, 0),
+        // 应用于图像的统一比例。比例大于会1.0放大标签，而比例小于会1.0缩小标签。
+        scale: 1.0,
+        // 是否显示
+        show: true
+      }
+    });
+    */
+    // 模型
+    var heading = Cesium.Math.toRadians(135);
+    var pitch = 0;
+    var roll = 0;
+    var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+    var orientation = Cesium.Transforms.headingPitchRollQuaternion(
+      Cesium.Cartesian3.fromDegrees(120, 30, 100),
+      hpr
+    );
+    console.log(123);
+    viewer.entities.add({
+      // 设置方向
+      orientation: orientation,
+      position: Cesium.Cartesian3.fromDegrees(120, 30, 10000),
+      model: {
+        // 引入模型
+        uri: "/SampleData/models/CesiumAir/Cesium_Air.glb",
+        // 模型的近似最小像素大小，而不考虑缩放。这可以用来确保即使观看者缩小也可以看到模型。如果为0.0，则不强制使用最小大小
+        minimumPixelSize: 1280,
+        // 模型的颜色（与模型的渲染颜色混合的属性）
+        color: Cesium.Color.WHITE.withAlpha(1),
+        // 模型的最大比例大小
+        maximumScale: 20000,
+        // 设置模型轮廓（边框）颜色
+        silhouetteColor: Cesium.Color.BLACK,
+        // 设置模型轮廓（边框）大小
+        silhouetteSize: 2,
+        // 是否执行模型动画
+        runAnimations: true,
+        // 应用于图像的统一比例。比例大于会1.0放大标签，而比例小于会1.0缩小标签。
+        scale: 1.0,
+        // 是否显示
+        show: true
+      }
+    });
+    /*
+
+    console.log(aa);
+    viewer.trackedEntity = aa;
+    */
+    /*
+    // 点击事件
+    var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
+    handler.setInputAction(function(click) {
+      var pick = viewer.scene.pick(click.position)
+      // 选中某模型   pick选中的对象
+      if (pick && pick.id) {
+        alert(pick.id._code)
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+    */
